@@ -19,7 +19,7 @@
     'installable': True,
     'assets': {
         'web.assets_frontend': [
-            'payment_paystack/static/src/js/payment_form.js',
+            'payment_paystack_ecommerce/static/src/js/payment_form.js',
         ],
     },
     'license': 'LGPL-3',
