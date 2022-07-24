@@ -93,7 +93,7 @@ class PaymentAcquirer(models.Model):
         self.ensure_one()
         if self.provider != 'paystack':
             return super()._get_default_payment_method_id()
-        return self.env.ref('payment_paystack.payment_method_paystack').id
+        return self.env.ref('payment_paystack_ecommerce.payment_method_paystack').id
 
 
     def _should_build_inline_form(self, is_validation=False):

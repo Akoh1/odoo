@@ -1,5 +1,5 @@
 /* global Stripe */
-odoo.define('payment_paystack.payment_form', require => {
+odoo.define('payment_paystack_ecommerce.payment_form', require => {
     'use strict';
 
     var ajax = require('web.ajax');

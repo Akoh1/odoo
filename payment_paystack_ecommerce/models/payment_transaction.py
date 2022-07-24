@@ -7,7 +7,7 @@ from werkzeug.urls import url_join, url_encode
 
 from odoo import _, api, models, fields
 from odoo.exceptions import ValidationError
-from odoo.addons.payment_paystack.controllers.controllers import PaystackController
+from odoo.addons.payment_paystack_ecommerce.controllers.controllers import PaystackController
 
 _logger = logging.getLogger(__name__)
 
