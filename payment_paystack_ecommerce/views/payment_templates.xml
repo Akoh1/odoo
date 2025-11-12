@@ -4,14 +4,14 @@
     <template id="checkout" inherit_id="payment.checkout">
         <xpath expr="." position="inside">
            
-            <script type="text/javascript" src="https://js.paystack.co/v1/inline.js"></script>
+            <script type="text/javascript" src="https://js.paystack.co/v2/inline.js"></script>
         </xpath>
     </template>
 
     <template id="manage" inherit_id="payment.manage">
         <xpath expr="." position="inside">
            
-            <script type="text/javascript" src="https://js.paystack.co/v1/inline.js"></script>
+            <script type="text/javascript" src="https://js.paystack.co/v2/inline.js"></script>
         </xpath>
     </template>
 
