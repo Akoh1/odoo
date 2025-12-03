@@ -1,0 +1,172 @@
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Paystack Payment Provider for Odoo</h2>
+        <h3 class="oe_slogan">Accept payments seamlessly with Paystack payment gateway</h3>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Key Features</h2>
+        <div class="oe_span12">
+            <ul>
+                <li><strong>Seamless Integration:</strong> Paystack inline checkout integrated directly into your Odoo eCommerce store</li>
+                <li><strong>Multi-Currency Support:</strong> Accept payments in multiple currencies supported by Paystack</li>
+                <li><strong>Real-time Verification:</strong> Instant payment verification via Paystack API</li>
+                <li><strong>Secure Transactions:</strong> All payments processed securely through Paystack's PCI-DSS compliant platform</li>
+                <li><strong>Test &amp; Live Modes:</strong> Easy switching between test and production environments</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Installation</h2>
+        <div class="oe_span12">
+            <p class="oe_mt32">
+                This addon can be installed as any other regular Odoo addon:
+            </p>
+            <ol>
+                <li>Unzip the addon in one of Odoo's addons paths.</li>
+                <li>Login to Odoo as a user with administrative privileges, go into debug mode.</li>
+                <li>Go to <strong>Apps → Update Apps List</strong>, click <strong>Update</strong> in the dialog window.</li>
+                <li>Go to <strong>Apps → Apps</strong>, remove the <em>Apps</em> filter in the search bar and search for <strong>Paystack Payment Provider</strong>. Click <strong>Install</strong> button on the addon.</li>
+            </ol>
+            <div class="alert alert-info" style="margin-top:16px;">
+                <strong>Note:</strong> If you would like to use the payment provider in the eCommerce shop, make sure the <strong>eCommerce</strong> module (<code>website_sale</code>) is installed as well.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Configuration</h2>
+        <div class="oe_span12">
+            <h3>Step 1: Get your Paystack API Keys</h3>
+            <p>
+                Before configuring the Paystack payment provider, register an account on
+                <a href="https://paystack.com" target="_blank">paystack.com</a> and login.
+            </p>
+            <p>
+                Once you have logged in, click on the <strong>Settings</strong> menu at the bottom left corner of the page and select <strong>API Keys &amp; Webhooks</strong>.
+            </p>
+            <ul>
+                <li>Copy the value of your <strong>Public Key</strong></li>
+                <li>Copy the value of your <strong>Secret Key</strong></li>
+            </ul>
+            <div class="alert alert-warning">
+                <strong>Important:</strong> Use the credentials from <strong>Live Mode</strong> for Odoo production servers and credentials from <strong>Test Mode</strong> for Odoo test/staging servers.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Step 2: Configure in Odoo</h2>
+        <div class="oe_span12">
+            <p>Login to Odoo as a user with administrative privileges and go into debug mode.</p>
+        </div>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-1.png" alt="Payment Methods page" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Navigate to Payment Providers</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-2.png" alt="Paystack Method Form" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Select Paystack Provider</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-3.png" alt="Paystack Provider" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Paystack Provider in Kanban View</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-4.png" alt="Paystack Provider kanban view" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Configure API Credentials</h3>
+        <div class="oe_span12">
+            <p>Enter your Paystack Public Key and Secret Key in the provider configuration form.</p>
+        </div>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-5.png" alt="Paystack Provider Form" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Customer Checkout Experience</h2>
+        <div class="oe_span12">
+            <p>When customers choose Paystack at checkout, they see the familiar Paystack payment interface:</p>
+        </div>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-6.png" alt="Confirm Order page" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Paystack Inline Checkout</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-7.png" alt="Paystack payment window" style="max-width:600px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Transaction Management</h2>
+        <div class="oe_span12">
+            <p>View and manage all Paystack transactions directly in Odoo:</p>
+        </div>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-8.png" alt="Paystack transaction" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_dark">
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan">Transaction List View</h3>
+        <div class="oe_demo oe_picture oe_screenshot">
+            <img src="paystack-v17-9.png" alt="Paystack transaction list" style="max-width:700px;">
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <h2 class="oe_slogan" style="color:#875A7B;">Support</h2>
+        <div class="oe_span12 text-center">
+            <p>
+                For support, questions, or feature requests, please contact us or create an issue on our GitHub repository.
+            </p>
+            <p>
+                <a href="https://github.com/Akoh1/odoo" target="_blank" class="btn btn-primary">GitHub Repository</a>
+            </p>
+        </div>
+    </div>
+</section>

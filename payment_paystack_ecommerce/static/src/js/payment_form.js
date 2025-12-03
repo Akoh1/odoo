@@ -1,83 +1,79 @@
-/* global Stripe */
-odoo.define('payment_paystack_ecommerce.payment_form', require => {
-    'use strict';
+/** @odoo-module */
 
-    var ajax = require('web.ajax');
-    var core = require('web.core');
+import { _t } from '@web/core/l10n/translation';
+import paymentForm from '@payment/js/payment_form';
 
-    const checkoutForm = require('payment.checkout_form');
-    const manageForm = require('payment.manage_form');
+paymentForm.include({
+    /**
+     * Redirect to Paystack payment flow using PaystackPop inline checkout.
+     *
+     * @override method from @payment/js/payment_form
+     * @private
+     * @param {string} code - The provider code
+     * @param {number} paymentOptionId - The id of the payment option handling the transaction
+     * @param {object} processingValues - The processing values of the transaction
+     * @return {void}
+     */
+    async _processRedirectFlow(providerCode, paymentOptionId, paymentMethodCode, processingValues) {
+        if (providerCode !== 'paystack') {
+            return this._super(...arguments);
+        }
 
-    const pstackMixin = {
+        console.log('processingValues: ', processingValues);
 
-        /**
-         * Redirect the customer to Paystack hosted payment page.
-         *
-         * @override method from payment.payment_form_mixin
-         * @private
-         * @param {string} provider - The provider of the payment option's acquirer
-         * @param {number} paymentOptionId - The id of the payment option handling the transaction
-         * @param {object} processingValues - The processing values of the transaction
-         * @return {undefined}
-         */
-        _processRedirectPayment: function (provider, paymentOptionId, processingValues) {
-            if (provider !== 'paystack') {
-                return this._super(...arguments);
-            }
+        try {
+            const handler = new PaystackPop();
+            console.log("handler: ", handler);
 
-            console.log(processingValues);
-            let handler = PaystackPop.setup({
-                key: processingValues['pub_key'], // Replace with your public key
+            handler.newTransaction({
+                key: processingValues['pub_key'],
                 email: processingValues['email'],
                 // currency: processingValues['currency'],
-                amount: processingValues['amount'] * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                amount: processingValues['amount'] * 100, // Convert to lowest currency unit (kobo)
                 ref: processingValues['reference'],
-    
-       
-                callback: function(response){
-          
-                    let ref = response;
-                    console.log("Response: " + ref);
-                    ajax.jsonRpc("/payment/paystack/checkout/return", 'call', {
-                        data : response,
-                        // ref: response.reference;
-                    }).then(function(data){
-                        // window.location.href = data;
-                        console.log("Payment Successful: " + data);
-                        window.location.href = data;
-                        
-                    }).catch(function(data){
-                        var msg = data && data.data && data.data.message;
-                        var wizard = $(qweb.render('paystack.error', {'msg': msg || _t('Payment error')}));
-                        wizard.appendTo($('body')).modal({'keyboard': true});
-                    });
-          
-                },
-                onClose: function() {
-                  alert('Transaction was not completed, window closed.');
-                },
 
+                onSuccess: async (transaction) => {
+                    console.log("Response: ", transaction);
+
+                    try {
+                        const response = await this.rpc("/payment/paystack/checkout/return", {
+                            data: transaction,
+                        });
+                        console.log("Payment Successful: ", response);
+                        window.location.href = response;
+                    } catch (error) {
+                        const msg = error && error.data && error.data.message;
+                        console.log("msg: ", msg);
+                        this._displayErrorDialog(
+                            _t("Payment Error"),
+                            msg || _t('Payment processing failed')
+                        );
+                    }
+                },
+                onCancel: () => {
+                    console.log("Transaction was not completed, window closed.");
+                    this._displayErrorDialog(
+                        _t("Payment Cancelled"),
+                        _t('You cancelled the payment. Please try again.')
+                    );
+                    this._enableButton();
+                },
+                onError: (error) => {
+                    console.log("Error: ", error.message);
+                    this._displayErrorDialog(
+                        _t("Payment Error"),
+                        error && error.message || _t('Payment initialization error')
+                    );
+                    this._enableButton();
+                }
             });
-            handler.openIframe();
-
-
-            console.log("redirected to checkout page");
-        },
-
-        /**
-         * Prepare the options to init the PayStack JS Object
-         *
-         * Function overriden in internal module
-         *
-         * @param {object} processingValues
-         * @return {object}
-         */
-        _preparePaystackOptions: function (processingValues) {
-            return {};
-        },
-    };
-
-    checkoutForm.include(pstackMixin);
-    manageForm.include(pstackMixin);
-
+        } catch (error) {
+            console.error('Error initializing PaystackPop:', error);
+            this._displayErrorDialog(
+                _t("Payment Error"),
+                error && error.message || _t('Payment initialization error')
+            );
+            this._enableButton();
+        }
+    },
 });
