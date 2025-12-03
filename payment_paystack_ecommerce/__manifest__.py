@@ -2,7 +2,7 @@
 {
     "name": "Paystack Payment Provider",
     "category": "Accounting/Payment Providers",
-    "version": "17.0.1.0.1",
+    "version": "17.0.1.0.2",
     "summary": "Payment Provider: Custom Paystack Implementation",
     "author": "Samuel Akoh <ojima.asm@gmail.com>",
     "description": """Custom Paystack Payment Provider""",
@@ -13,7 +13,7 @@
         "views/payment_templates.xml",
         "data/payment_provider_data.xml",
     ],
-    "images": ["static/description/icon.png", "doc/images/*.png"],
+    "images": ["static/description/*.png"],
     "application": True,
     "uninstall_hook": "uninstall_hook",
     "installable": True,
