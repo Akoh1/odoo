@@ -2,7 +2,7 @@
 {
     "name": "Paystack Payment Provider",
     "category": "Accounting/Payment Providers",
-    "version": "17.0.1.0.0",
+    "version": "17.0.1.0.1",
     "summary": "Payment Provider: Custom Paystack Implementation",
     "author": "Samuel Akoh <ojima.asm@gmail.com>",
     "description": """Custom Paystack Payment Provider""",
