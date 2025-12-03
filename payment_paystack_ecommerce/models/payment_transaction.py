@@ -71,6 +71,7 @@ class PaymentTransaction(models.Model):
         return {
             "reference": self.reference,
             "currency": self.currency_id.name,
+            "amount": self.amount,
             "callback_url": str(url_join(base_url, return_url)),
             "email": self.partner_email,
         }
@@ -143,21 +144,17 @@ class PaymentTransaction(models.Model):
             self._set_canceled(
                 "Paystack: " + _("Canceled payment with status: %s", payment_status)
             )
-
-        elif (
-            payment_status == "successful"
-            and (self.amount * 100) != amount
-            or payment_status == "success"
-            and self.currency_id.name != currency
+        elif payment_status == "success" and (
+            (self.amount * 100) != amount or self.currency_id.name != currency
         ):
-            _logger.info("Successful Partial Payment Made: %s", payment_status)
-            _logger.info("amount: %s", amount)
-            _logger.info("self.amount: %s", self.amount)
-            _logger.info("currency: %s", currency)
-            _logger.info("self.currency: %s", self.currency_id.name)
-            self._set_pending(state_message="Partial Payment Made")
-        else:
+            _logger.warning("Partial/Invalid Payment Made")
+            _logger.info("Expected amount: %s, Received: %s", self.amount * 100, amount)
             _logger.info(
+                "Expected currency: %s, Received: %s", self.currency_id.name, currency
+            )
+            self._set_pending(state_message="Partial or Invalid Payment Made")
+        else:
+            _logger.warning(
                 "Received data with invalid payment status: %s", payment_status
             )
             self._set_error(

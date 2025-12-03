@@ -1,84 +1,79 @@
+/** @odoo-module */
 
-odoo.define('payment_paystack.payment_form', require => {
-    'use strict';
+import { _t } from '@web/core/l10n/translation';
+import paymentForm from '@payment/js/payment_form';
 
-    const checkoutForm = require('payment.checkout_form');
-    const manageForm = require('payment.manage_form');
-    const ajax = require('web.ajax');
-    const core = require('web.core');
-    const qweb = core.qweb;
-    const _t = core._t;
+paymentForm.include({
+    /**
+     * Redirect to Paystack payment flow using PaystackPop inline checkout.
+     *
+     * @override method from @payment/js/payment_form
+     * @private
+     * @param {string} code - The provider code
+     * @param {number} paymentOptionId - The id of the payment option handling the transaction
+     * @param {object} processingValues - The processing values of the transaction
+     * @return {void}
+     */
+    async _processRedirectFlow(providerCode, paymentOptionId, paymentMethodCode, processingValues) {
+        if (providerCode !== 'paystack') {
+            return this._super(...arguments);
+        }
 
-    const PaystackMixin = {
-        /**
-         * Allow forcing redirect to authorization url for Paystack payment flow.
-         *
-         * @override method from payment.payment_form_mixin
-         * @private
-         * @param {string} provider - The code of the payment provider
-         * @param {number} paymentOptionId - The id of the payment option handling the transaction
-         * @param {object} processingValues - The processing values of the transaction
-         * @return {undefined}
-         */
-        _processRedirectPayment: function(code, providerId, processingValues) {
-            if (code !== 'paystack') {
-                return this._super(...arguments);
-            }
+        console.log('processingValues: ', processingValues);
 
-            console.log('processingValues: ', processingValues);
-        
-            try {
-                const handler = new PaystackPop();
-                console.log("handler: ", handler);
-                    
-                handler.newTransaction({
-                    key: processingValues['pub_key'], // Replace with your public key
-                    email: processingValues['email'],
-                    currency: 'NGN',
-                    // currency: processingValues['currency'],
-                    amount: processingValues['amount'] * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
-                    ref: processingValues['reference'],
+        try {
+            const handler = new PaystackPop();
+            console.log("handler: ", handler);
 
-                    onSuccess: (transaction) => { 
-                        // Payment complete!
-                        console.log("Response: " + transaction);
-                        
-                        ajax.jsonRpc("/payment/paystack/checkout/return", 'call', {
+            handler.newTransaction({
+                key: processingValues['pub_key'],
+                email: processingValues['email'],
+                // currency: processingValues['currency'],
+                amount: processingValues['amount'] * 100, // Convert to lowest currency unit (kobo)
+                ref: processingValues['reference'],
+
+                onSuccess: async (transaction) => {
+                    console.log("Response: ", transaction);
+
+                    try {
+                        const response = await this.rpc("/payment/paystack/checkout/return", {
                             data: transaction,
-                            // ref: response.reference;
-                        }).then(function(data){
-                            // window.location.href = data;
-                            console.log("Payment Successful: " + data);
-                            window.location.href = data;
-                            
-                        }).catch(function(data){
-                            var msg = data && data.data && data.data.message;
-                            console.log("msg: ", msg);
-                            
-                            var wizard = $(qweb.render('paystack.error', {'msg': msg || _t('Payment error')}));
-                            wizard.appendTo($('body')).modal({'keyboard': true});
                         });
-                    },
-                    onCancel: () => {
-                        // user closed popup
-                        console.log("Transaction was not completed, window closed.");
-                    },
-                    onError: (error) => {
-                        console.log("Error: ", error.message);
-                        var msg = error && error.message || _t('Payment initialization error');
-                        var wizard = $(qweb.render('paystack.error', {'msg': msg}));
-                        wizard.appendTo($('body')).modal({'keyboard': true});
+                        console.log("Payment Successful: ", response);
+                        window.location.href = response;
+                    } catch (error) {
+                        const msg = error && error.data && error.data.message;
+                        console.log("msg: ", msg);
+                        this._displayErrorDialog(
+                            _t("Payment Error"),
+                            msg || _t('Payment processing failed')
+                        );
                     }
-                });
-            } catch (error) {
-                console.error('Error initializing PaystackPop:', error);
-                var msg = error && error.message || _t('Payment initialization error');
-                var wizard = $(qweb.render('paystack.error', {'msg': msg}));
-                wizard.appendTo($('body')).modal({'keyboard': true});
-            }
-        },
-    };
-
-    checkoutForm.include(PaystackMixin);
-    manageForm.include(PaystackMixin);
+                },
+                onCancel: () => {
+                    console.log("Transaction was not completed, window closed.");
+                    this._displayErrorDialog(
+                        _t("Payment Cancelled"),
+                        _t('You cancelled the payment. Please try again.')
+                    );
+                    this._enableButton();
+                },
+                onError: (error) => {
+                    console.log("Error: ", error.message);
+                    this._displayErrorDialog(
+                        _t("Payment Error"),
+                        error && error.message || _t('Payment initialization error')
+                    );
+                    this._enableButton();
+                }
+            });
+        } catch (error) {
+            console.error('Error initializing PaystackPop:', error);
+            this._displayErrorDialog(
+                _t("Payment Error"),
+                error && error.message || _t('Payment initialization error')
+            );
+            this._enableButton();
+        }
+    },
 });

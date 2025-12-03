@@ -5,14 +5,14 @@
         <field name="inherit_id" ref="payment.payment_provider_form"/>
         <field name="arch" type="xml">
             <group name="provider_credentials" position="inside">
-                <group attrs="{'invisible': [('code', '!=', 'paystack')]}"
+                <group invisible="code != 'paystack'"
                        name="paystack_credentials">
                     <field name="pstack_public_key"
                            string="Public Key"
-                           attrs="{'required':[('code', '=', 'paystack'), ('state', '!=', 'disabled')]}"/>
+                           required="code == 'paystack' and state != 'disabled'"/>
                     <field name="pstack_secret_key"
                            string="Secret Key"
-                           attrs="{'required':[('code', '=', 'paystack'), ('state', '!=', 'disabled')]}"
+                           required="code == 'paystack' and state != 'disabled'"
                            password="True"/>
                 </group>
             </group>

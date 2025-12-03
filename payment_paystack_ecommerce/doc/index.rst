@@ -43,15 +43,73 @@ and use the credentials on the test mode to test on Odoo test servers.
 Now, let's configure the payment acquirer:
 
 - Login to Odoo as a user with administrative privileges, go into debug mode.
-- Go to *Website -> Configuration -> eCommerce -> Payment Acquirers* or
-  *Invoicing -> Configuration -> Payments -> Payment Acquirers* and click
-  *Configure* on the *Paystack* acquirer.
 
-- In the *Credentials* tab, enter the Public and Secret key from Rave 
-  *API credentials* section noted earlier:
+.. image:: images/paystack-v17-1.png
+    :alt: Payment Methods page.
+    :class: img-responsive img-thumbnail
 
+.. image:: images/paystack-v17-2.png
+    :alt: Paystack Method Form
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnailpaystack-v17-3
 
-- Click on the *Save* button.
-- Click on the *Publish* button to make the acquirer available for you in the
-  eCommerce shop.
+    .. image:: images/paystack-v17-3.png
+    :alt: Paystack Provider
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-4.png
+    :alt: Paystack Provider kanban view
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-5.png
+    :alt: Paystack Provider Form
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-6.png
+    :alt: Confirm Order page
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-7.png
+    :alt: Paystack payment window
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-8.png
+    :alt: Paystack transaction
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
+    .. image:: images/paystack-v17-9.png
+    :alt: Paystack transaction list
+    :width: 500px
+    :height: 300px
+    :scale: 50%
+    :align: center
+    :class: img-responsive img-thumbnail
+
 

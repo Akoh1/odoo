@@ -37,7 +37,7 @@ class PaystackController(http.Controller):
         """
         _logger.info("Paystack notify data:\n%s", pprint.pformat(data))
         try:
-            request.env["payment.transaction"].sudo()._handle_feedback_data(
+            request.env["payment.transaction"].sudo()._handle_notification_data(
                 "paystack", data
             )
         except ValidationError:
