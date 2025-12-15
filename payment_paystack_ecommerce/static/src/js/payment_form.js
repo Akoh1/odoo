@@ -2,6 +2,7 @@
 
 import { _t } from '@web/core/l10n/translation';
 import paymentForm from '@payment/js/payment_form';
+import { rpc } from "@web/core/network/rpc";
 
 paymentForm.include({
     /**
@@ -28,7 +29,7 @@ paymentForm.include({
             handler.newTransaction({
                 key: processingValues['pub_key'],
                 email: processingValues['email'],
-                // currency: processingValues['currency'],
+                currency: processingValues['currency'],
                 amount: processingValues['amount'] * 100, // Convert to lowest currency unit (kobo)
                 ref: processingValues['reference'],
 
@@ -36,14 +37,12 @@ paymentForm.include({
                     console.log("Response: ", transaction);
 
                     try {
-                        const response = await this.rpc("/payment/paystack/checkout/return", {
+                        const response = await rpc("/payment/paystack/checkout/return", {
                             data: transaction,
                         });
-                        console.log("Payment Successful: ", response);
                         window.location.href = response;
                     } catch (error) {
                         const msg = error && error.data && error.data.message;
-                        console.log("msg: ", msg);
                         this._displayErrorDialog(
                             _t("Payment Error"),
                             msg || _t('Payment processing failed')

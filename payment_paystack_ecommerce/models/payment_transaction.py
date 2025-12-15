@@ -24,7 +24,6 @@ class PaymentTransaction(models.Model):
         :return: The dict of acquirer-specific processing values
         :rtype: dict
         """
-        print(f"processing_values: {processing_values}")
         res = super()._get_specific_processing_values(processing_values)
         if self.provider_code != "paystack" or self.operation == "online_token":
             return res
@@ -121,11 +120,9 @@ class PaymentTransaction(models.Model):
         if self.provider_code != "paystack":
             return
 
-        print("reference stage process_feedback_data: %s", self.provider_reference)
         payment_data = self.provider_id._pstack_get_request(
             f"/transaction/verify/{self.reference}"
         )
-        print(f"payment_data: {payment_data}")
         payment_status = payment_data.get("data").get(
             "status"
         )  # confirm this is correct
@@ -137,7 +134,7 @@ class PaymentTransaction(models.Model):
         if (
             payment_status == "success"
             and (self.amount * 100) == amount
-            and self.currency_id.name != currency
+            and self.currency_id.name == currency
         ):
             self._set_done()
         elif payment_status == "failed":
